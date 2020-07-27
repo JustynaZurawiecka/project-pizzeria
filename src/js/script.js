@@ -90,6 +90,7 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
     }
 
     initAccordion() {
@@ -172,21 +173,45 @@
           /* Check whether params has options */
             if(formData[param].includes(option)){
             /* If both conditions are true the option is marked */
-            isMarked = 'Yes';
+            isMarked = true;
             console.log(isMarked);
           }
           /* ELSE not marked */
           else {
-            isMarked = 'No';
+            isMarked = false;
             console.log(isMarked);
             /* END IF */
           }
+            /* IMAGES
+            / * find all image elements for the option and assing them to the constant */
+            const optionImages = thisProduct.imageWrapper;
+            console.log('optionImages', optionImages);
+
+            const allImages = optionImages.querySelectorAll('.' + param + '-' + option);
+            console.log('allImages' , allImages);
+
+            /* IF option is marked, active class is added for all images for the option (saved in classNames.menuProduct.imageVisible) */
+            if(isMarked == true){
+              for(const oneImage of allImages){
+                oneImage.classList.add(classNames.menuProduct.imageVisible);
+                console.log('added active to oneImage', oneImage);
+              }
+            }
+              /* ELSE active class is removed for all images for the option (saved in classNames.menuProduct.imageVisible) */
+            else {
+              for(const oneImage of allImages){
+                oneImage.classList.remove(classNames.menuProduct.imageVisible);
+                console.log('removed active to oneImage', oneImage);
+              }
+            }
+          
+
           /* Check if option is default */   
-          if(isMarked == 'Yes' && options[option].default !== true){
+          if(isMarked == true && options[option].default !== true){
 
             /* IF option is marked and not default increase the price */
             price += options[option].price;
-          } else if(isMarked == 'No' && options[option].default == true){
+          } else if(isMarked == false && options[option].default == true){
             /* IF option is not marked and default decrease the price */
             price -= options[option].price;
           }
