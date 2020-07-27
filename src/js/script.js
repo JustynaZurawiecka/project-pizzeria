@@ -59,12 +59,15 @@
       thisProduct.id = id;
       thisProduct.data = data;
       thisProduct.renderInMenu();
+      thisProduct.getElements();
       thisProduct.initAccordion();
+      thisProduct.initOrderForm();
+      thisProduct.processOrder();
 
       console.log('new Product:', thisProduct);
     }
 
-    renderInMenu(){
+    renderInMenu() {
       const thisProduct = this;
 
       /* generate HTML based on template */
@@ -79,62 +82,138 @@
       menuContainer.appendChild(thisProduct.element);
     }
 
-    initAccordion(){
+    getElements() {
       const thisProduct = this;
 
+      thisProduct.accordionTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
+      thisProduct.form = thisProduct.element.querySelector(select.menuProduct.form);
+      thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
+      thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
+      thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+    }
+
+    initAccordion() {
+      const thisProduct = this;
+      const params = thisProduct.data.params;
+
       /* find the clickable trigger (the element that should react to clicking) */
-      const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable);
-      console.log('clickableTrigger', clickableTrigger);
+      const clickableTrigger = thisProduct.accordionTrigger;
 
       /* START: click event listener to trigger */
-      clickableTrigger.addEventListener('click', function(event){
+      clickableTrigger.addEventListener('click', function (event) {
         console.log('Product clicked');
-      
+
         /* prevent default action for event */
         event.preventDefault();
 
         /* toggle active class on element of thisProduct */
         thisProduct.element.classList.add(classNames.menuProduct.wrapperActive);
 
-          /* find all active products */
+        /* find all active products */
         const allActiveProducts = document.querySelectorAll(select.all.menuProductsActive);
-        console.log('allActiveProducts', allActiveProducts);
 
-          /* START LOOP: for each active product */
-          for(const activeProduct of allActiveProducts){
-            console.log('active product', activeProduct);
+        /* START LOOP: for each active product */
+        for (const activeProduct of allActiveProducts) {
 
-            /* START: if the active product isn't the element of thisProduct */
-            // console.log('thisProduct = ' + thisProduct + ' activeProduct = ' + activeProduct);
-            if(thisProduct.element !== activeProduct){
-              /* remove class active for the active product */
-              activeProduct.classList.remove(classNames.menuProduct.wrapperActive);
-              // console.log('class active removed');
+          /* START: if the active product isn't the element of thisProduct */
+          if (thisProduct.element !== activeProduct) {
+            /* remove class active for the active product */
+            activeProduct.classList.remove(classNames.menuProduct.wrapperActive);
             /* END: if the active product isn't the element of thisProduct */
-            }
-          /* END LOOP: for each active product */
           }
+          /* END LOOP: for each active product */
+        }
         /* END: click event listener to trigger */
       });
+    }
+    initOrderForm(){
+      const thisProduct = this;
+
+      console.log('initOrderForm was fired');
+
+      thisProduct.form.addEventListener('submit', function(event){
+        event.preventDefault();
+        thisProduct.processOrder();
+      });
+      
+      for(let input of thisProduct.formInputs){
+        input.addEventListener('change', function(){
+          thisProduct.processOrder();
+          console.log('change event handler from initOrderForm was fired');
+        });
+      }
+      
+      thisProduct.cartButton.addEventListener('click', function(event){
+        event.preventDefault();
+        thisProduct.processOrder();
+      });
+    } 
+    processOrder(){
+      const thisProduct = this;
+
+      console.log('processOrder was fired');
+
+      const formData = utils.serializeFormToObject(thisProduct.form);
+
+      let price = thisProduct.data.price;
+
+      /* START loop for each param */
+      const params = thisProduct.data.params;
+
+      for(const param in params){
+      
+        /* START loop for each option */
+        const options = params[param].options;
+        let isMarked = '';
+
+        for(const option in options){
+          /* IF: to check if option is marked, check the following conditions:  */
+          /* Check whether formData contains params property */
+          /* Check whether params has options */
+            if(formData[param].includes(option)){
+            /* If both conditions are true the option is marked */
+            isMarked = 'Yes';
+            console.log(isMarked);
+          }
+          /* ELSE not marked */
+          else {
+            isMarked = 'No';
+            console.log(isMarked);
+            /* END IF */
+          }
+          /* Check if option is default */   
+          if(isMarked == 'Yes' && options[option].default !== true){
+
+            /* IF option is marked and not default increase the price */
+            price += options[option].price;
+          } else if(isMarked == 'No' && options[option].default == true){
+            /* IF option is not marked and default decrease the price */
+            price -= options[option].price;
+          }
+        /* END loop for each option */
+        }
+      /* END loop for each param */
+      }
+      thisProduct.priceElem.innerHTML = price;
     }
   }
 
   const app = {
-    initMenu: function(){
-      const thisApp = this;   
+    initMenu: function () {
+      const thisApp = this;
 
       console.log('thisApp.data: ', thisApp.data);
 
-      for(let productData in thisApp.data.products){
+      for (let productData in thisApp.data.products) {
         new Product(productData, thisApp.data.products[productData]);
       }
     },
-    initData: function(){
+    initData: function () {
       const thisApp = this;
 
       thisApp.data = dataSource;
     },
-    init: function(){
+    init: function () {
       const thisApp = this;
       console.log('*** App starting ***');
       console.log('thisApp:', thisApp);
