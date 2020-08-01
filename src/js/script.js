@@ -192,23 +192,15 @@
 
       const formData = utils.serializeFormToObject(thisProduct.form);
 
-      console.log('thisProduct.params88888888888888',thisProduct.params);
-
       thisProduct.params = {};
 
       let price = thisProduct.data.price;
 
       /* START loop for each param */
       const params = thisProduct.data.params;
-      console.log('param zaraz PO PRZYPISANIUUUUUUUUUUUUUUUU', params);
       for(const param in params){
-        console.log('param w PETELCEEEEEEEEEEEEEEEEEE', param);
-        console.log('params[param] w PETELCEEEEEEEEEEEEEEEEEE', params[param]);
-        console.log('param.label 1111111111111', param.label);
-        console.log('thisProduct.data.params.param.label 1111111111111', thisProduct.data.params.param);
         /* START loop for each option */
         const options = params[param].options;
-        console.log('params[param].options  3333333333',params[param].options);
         let isMarked = '';
 
         for(const option in options){
@@ -233,22 +225,13 @@
 
           /* IF option is marked, active class is added for all images for the option (saved in classNames.menuProduct.imageVisible) */
           if(isMarked){
-            console.log('thisProduct na poczatku IS MARKEDDDDD',thisProduct);
-            console.log('param ten z petliiiiiiiii', param);
-            console.log('param.label ten z petliiiiiiiii', param.label);
-            console.log('option ten z petliiiiiiiii', option);
-            // console.log('thisProduct.params[param] IS MARKED',thisProduct.params[param]);
             if(!thisProduct.params[param]){
               thisProduct.params[param] = {
                 label: params[param].label, 
                 options: {},
               };
             }
-            console.log('thisProduct.params[param] IS MARKED',thisProduct.params[param]);
-            console.log('param.label 22222222222', param.label);
             thisProduct.params[param].options[option] = options[option].label;
-            console.log('thisProduct.params[param].options[option]',thisProduct.params[param].options[option]);
-            console.log('option.label',option.label);
             for(const oneImage of allImages){
               oneImage.classList.add(classNames.menuProduct.imageVisible);
             }
@@ -294,7 +277,6 @@
 
       thisProduct.name = thisProduct.data.name;
       thisProduct.amount = thisProduct.amountWidget.value;
-      console.log('thisProduct 7777777777777777',thisProduct);
       app.cart.add(thisProduct);
     }
   }
