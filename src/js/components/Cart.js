@@ -11,8 +11,6 @@ class Cart{
 
     thisCart.getElements(element);
     thisCart.initActions();
-
-    console.log('new Cart', thisCart);
   }
 
   getElements(element){
@@ -27,6 +25,8 @@ class Cart{
     thisCart.dom.form = thisCart.dom.wrapper.querySelector(select.cart.form);
     thisCart.dom.phone = thisCart.dom.wrapper.querySelector(select.cart.phone);
     thisCart.dom.address = thisCart.dom.wrapper.querySelector(select.cart.address);
+
+    console.log(thisCart.dom, 'Cart DOM');
 
     thisCart.renderTotalsKeys = ['totalNumber', 'totalPrice', 'subtotalPrice', 'deliveryFee'];
 
@@ -71,16 +71,13 @@ class Cart{
 
     /* create DOM element */
     const generateDOM = utils.createDOMFromHTML(generatedHTML);
-    console.log('generateDOM',generateDOM);
 
     /* add element to cart */
     thisCart.dom.productList.appendChild(generateDOM);
-    console.log('thisCart.dom.productList',thisCart.dom.productList);
 
     console.log('adding product to cart');
 
     thisCart.products.push(new CartProduct(menuProduct, generateDOM));
-    console.log('thisCart.products', thisCart.products);
 
     thisCart.update();
   }
