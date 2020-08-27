@@ -26,8 +26,6 @@ class Cart{
     thisCart.dom.phone = thisCart.dom.wrapper.querySelector(select.cart.phone);
     thisCart.dom.address = thisCart.dom.wrapper.querySelector(select.cart.address);
 
-    console.log(thisCart.dom, 'Cart DOM');
-
     thisCart.renderTotalsKeys = ['totalNumber', 'totalPrice', 'subtotalPrice', 'deliveryFee'];
 
     for (let key of thisCart.renderTotalsKeys) {
