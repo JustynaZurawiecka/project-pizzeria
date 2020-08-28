@@ -12,6 +12,8 @@ class Booking{
     thisBooking.initWidgets();
     thisBooking.getData();
     thisBooking.initActions();
+
+    thisBooking.selectedTable;
   }
 
   getData(){
@@ -163,16 +165,21 @@ class Booking{
     thisBooking.dom = {};
     thisBooking.dom.wrapper = element;
     thisBooking.dom.wrapper.innerHTML = generatedHTML;
-
     thisBooking.dom.peopleAmount = thisBooking.dom.wrapper.querySelector(select.booking.peopleAmount);
     thisBooking.dom.hoursAmount = thisBooking.dom.wrapper.querySelector(select.booking.hoursAmount);
     thisBooking.dom.datePicker = thisBooking.dom.wrapper.querySelector(select.widgets.datePicker.wrapper);
     thisBooking.dom.hourPicker = thisBooking.dom.wrapper.querySelector(select.widgets.hourPicker.wrapper);
     thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
 
-    thisBooking.dom.hoursAmount.input = thisBooking.dom.hoursAmount.querySelector(select.widgets.amount);
+    thisBooking.dom.phone = thisBooking.dom.wrapper.querySelector(select.cart.phone);
+    thisBooking.dom.address = thisBooking.dom.wrapper.querySelector(select.cart.address);
+    thisBooking.dom.hourPicker.output = thisBooking.dom.wrapper.querySelector(select.widgets.hourPicker.output);
+    thisBooking.dom.starters = thisBooking.dom.wrapper.querySelectorAll('.checkbox input');
+    thisBooking.dom.peopleAmount.input = thisBooking.dom.wrapper.querySelector('.people-amount input.amount');
+    thisBooking.dom.hoursAmount.input = thisBooking.dom.wrapper.querySelector('.hours-amount input.amount');
 
-    console.log(thisBooking.dom.hoursAmount.input, 'thisBooking.dom.hoursAmount.input');
+    // console.log(thisBooking.dom.datePicker.value, 'thisBooking.dom.datePicker');
+
   }
 
   initWidgets(){
@@ -191,16 +198,16 @@ class Booking{
   initActions(){
     const thisBooking = this;
 
-
-    // thisBooking.dom.starters = document.getElementsByName('starters').getAttribute('value');
-    // console.log('thisBooking.dom.starters', thisBooking.dom.starters);
-
     for(let clikableTable of thisBooking.dom.tables){
       clikableTable.addEventListener('click', function(){
         clikableTable.classList.add(classNames.booking.tableBooked);
+        let tableId = clikableTable.getAttribute(settings.booking.tableIdAttribute);
+        thisBooking.selectedTable =  tableId;
       });
     }
-    /* remove active class from the available table after date pr hour is changed */  
+    /* if a table contains setting booked, alert that it's unavailable */ 
+    /* else  * / 
+    /* remove active class from the available table after date or hour is changed */  
 
     thisBooking.dom.form = thisBooking.dom.wrapper.querySelector(select.booking.form);
 
@@ -214,29 +221,42 @@ class Booking{
     const thisBooking = this;
     const url = settings.db.url + '/' + settings.db.booking;
 
-    // thisBooking.dom.starters = thisBooking.dom.wrapper.getElementsByName('starters').getAttribute('value')
-    // console.log('thisBooking.dom.starters', thisBooking.dom.starters);
-
-    thisBooking.dom.phone = thisBooking.dom.wrapper.querySelector(select.cart.phone);
-    thisBooking.dom.address = thisBooking.dom.wrapper.querySelector(select.cart.address);
-    thisBooking.dom.hourPicker.output = thisBooking.dom.wrapper.querySelector(select.widgets.hourPicker.output);
-    // thisBooking.dom.peopleAmount.input = thisBooking.dom.peopleAmount.querySelector(select.widgets.amount);
-
-
     const payload = {
-      date: thisBooking.dom.datePicker.value,
+      date: thisBooking.datePicker.value,
       hour: thisBooking.dom.hourPicker.output.innerHTML,
-      table: thisBooking.tableId,
-      duration: thisBooking.dom.hoursAmount.value,
-      ppl: thisBooking.dom.peopleAmount.value,
+      table: thisBooking.selectedTable,
+      duration: parseInt(thisBooking.dom.hoursAmount.input.value),
+      ppl: parseInt(thisBooking.dom.peopleAmount.input.value),
       starters: [],
       phone: thisBooking.dom.phone.value,
       address: thisBooking.dom.address.value,
     };
 
+    for(let pickedStarter of thisBooking.dom.starters) {
+      if(pickedStarter.checked) {
+        payload.starters.push(pickedStarter.value);
+      }
+    }
+
     console.log('payload', payload);
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    };
+
+    fetch(url, options)
+      .then(function(response){
+        console.log(response);
+        return response.json();
+      }).then(function(parsedResponse){
+        console.log('parsedResponse', parsedResponse);
+      });
     
-    /* add all booking information to an object */ 
+    /* add all booking information to an object -TABLE ID to do */ 
     /* send booking to API */ 
     /* when a table booked and reservation is sending to API, table should not be available */
     /* after the date or hour is booked the reservation should not be possible at that time */ 

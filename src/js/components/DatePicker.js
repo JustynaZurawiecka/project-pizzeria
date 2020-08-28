@@ -29,13 +29,17 @@ class DatePicker extends BaseWidget{
       minDate: thisWidget.minDate,
       maxDate: thisWidget.maxDate,
       locale: {
-        firstDayOfWeek:2 
+        firstDayOfWeek:1
       },
       disable: [
         function(date) {
           return (date.getDay() === 1);
         }
-      ]  
+      ],
+      onChange: function(){
+        thisWidget.value = thisWidget.dom.input.value;
+        console.log('thisWidget.value on change', thisWidget.value);
+      }
     });
   }
 
