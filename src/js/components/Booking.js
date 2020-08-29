@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import {select, templates, settings, classNames} from '../settings.js';
 import {utils} from '../utils.js';
 import AmountWidget from './AmountWidget.js';
@@ -112,14 +113,22 @@ class Booking{
 
     const startHour = utils.hourToNumber(hour);
 
+    console.log('duration przed petla: ', duration);
+
     for(let hourBlock = startHour; hourBlock < startHour + duration; hourBlock+=0.5){
       // console.log('loop', hourBlock);
+
+      console.log('duration w petli: ', duration);
 
       if(typeof thisBooking.booked[date][hourBlock] == 'undefined'){
         thisBooking.booked[date][hourBlock] = [];
       }
 
       thisBooking.booked[date][hourBlock].push(table);
+
+      console.log('makeBooked petla wartosci:', 'startHour ' + startHour + ' hourBlock ' + hourBlock );
+
+
     }
   }
 
@@ -148,13 +157,14 @@ class Booking{
       if(
         !allAvailable
         &&
-        thisBooking.booked[thisBooking.date][thisBooking.hour].includes(tableId) > -1
+        thisBooking.booked[thisBooking.date][thisBooking.hour].includes(tableId) 
       ){
         table.classList.add(classNames.booking.tableBooked);
-      } else {
+      } else{
         table.classList.remove(classNames.booking.tableBooked);
       }
     }
+    console.log('thisBooking.booked z updateDOM',thisBooking.booked);
   }
 
   render(element){
@@ -171,8 +181,8 @@ class Booking{
     thisBooking.dom.hourPicker = thisBooking.dom.wrapper.querySelector(select.widgets.hourPicker.wrapper);
     thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
 
-    thisBooking.dom.phone = thisBooking.dom.wrapper.querySelector(select.cart.phone);
-    thisBooking.dom.address = thisBooking.dom.wrapper.querySelector(select.cart.address);
+    thisBooking.dom.phone = thisBooking.dom.wrapper.querySelector(select.booking.phone);
+    thisBooking.dom.address = thisBooking.dom.wrapper.querySelector(select.booking.address);
     thisBooking.dom.hourPicker.output = thisBooking.dom.wrapper.querySelector(select.widgets.hourPicker.output);
     thisBooking.dom.starters = thisBooking.dom.wrapper.querySelectorAll('.checkbox input');
     thisBooking.dom.peopleAmount.input = thisBooking.dom.wrapper.querySelector('.people-amount input.amount');
@@ -199,8 +209,12 @@ class Booking{
     const thisBooking = this;
 
     for(let clikableTable of thisBooking.dom.tables){
+      
       clikableTable.addEventListener('click', function(){
+
         clikableTable.classList.add(classNames.booking.tableBooked);
+        console.log('clikableTable', clikableTable);
+        
         let tableId = clikableTable.getAttribute(settings.booking.tableIdAttribute);
         thisBooking.selectedTable =  tableId;
       });
@@ -224,7 +238,7 @@ class Booking{
     const payload = {
       date: thisBooking.datePicker.value,
       hour: thisBooking.dom.hourPicker.output.innerHTML,
-      table: thisBooking.selectedTable,
+      table: parseInt(thisBooking.selectedTable),
       duration: parseInt(thisBooking.dom.hoursAmount.input.value),
       ppl: parseInt(thisBooking.dom.peopleAmount.input.value),
       starters: [],
@@ -248,6 +262,7 @@ class Booking{
       body: JSON.stringify(payload),
     };
 
+
     fetch(url, options)
       .then(function(response){
         console.log(response);
@@ -256,11 +271,13 @@ class Booking{
         console.log('parsedResponse', parsedResponse);
       });
     
-    /* add all booking information to an object -TABLE ID to do */ 
-    /* send booking to API */ 
-    /* when a table booked and reservation is sending to API, table should not be available */
-    /* after the date or hour is booked the reservation should not be possible at that time */ 
-  }
+      thisBooking.makeBooked(thisBooking.datePicker.value, thisBooking.dom.hourPicker.output.innerHTML, parseInt(thisBooking.dom.hoursAmount.input.value), parseInt(thisBooking.selectedTable));
+      // thisBooking.updateDOM();
+
+      // console.log(thisBooking.booked,'thisBooking.booked');
+      }
+
+
 }
 
 export default Booking;
