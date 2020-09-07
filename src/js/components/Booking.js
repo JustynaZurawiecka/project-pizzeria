@@ -113,12 +113,12 @@ class Booking{
 
     const startHour = utils.hourToNumber(hour);
 
-    console.log('duration przed petla: ', duration);
+    // console.log('duration przed petla: ', duration);
 
     for(let hourBlock = startHour; hourBlock < startHour + duration; hourBlock+=0.5){
       // console.log('loop', hourBlock);
 
-      console.log('duration w petli: ', duration);
+      // console.log('duration w petli: ', duration);
 
       if(typeof thisBooking.booked[date][hourBlock] == 'undefined'){
         thisBooking.booked[date][hourBlock] = [];
@@ -126,7 +126,7 @@ class Booking{
 
       thisBooking.booked[date][hourBlock].push(table);
 
-      console.log('makeBooked petla wartosci:', 'startHour ' + startHour + ' hourBlock ' + hourBlock );
+      // console.log('makeBooked petla wartosci:', 'startHour ' + startHour + ' hourBlock ' + hourBlock );
 
 
     }
@@ -164,7 +164,7 @@ class Booking{
         table.classList.remove(classNames.booking.tableBooked);
       }
     }
-    console.log('thisBooking.booked z updateDOM',thisBooking.booked);
+    // console.log('thisBooking.booked z updateDOM',thisBooking.booked);
   }
 
   render(element){
@@ -213,7 +213,7 @@ class Booking{
       clikableTable.addEventListener('click', function(){
 
         clikableTable.classList.add(classNames.booking.tableBooked);
-        console.log('clikableTable', clikableTable);
+        // console.log('clikableTable', clikableTable);
         
         let tableId = clikableTable.getAttribute(settings.booking.tableIdAttribute);
         thisBooking.selectedTable =  tableId;
@@ -252,7 +252,7 @@ class Booking{
       }
     }
 
-    console.log('payload', payload);
+    // console.log('payload', payload);
 
     const options = {
       method: 'POST',
