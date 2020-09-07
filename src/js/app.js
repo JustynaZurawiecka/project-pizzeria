@@ -18,6 +18,11 @@ const app = {
     thisApp.navLinks = document.querySelectorAll(select.nav.links);
 
     const idFromHash = window.location.hash.replace('#/', '');
+    if(idFromHash!='order'){
+      document.querySelector(select.containerOf.cart).style.display='none';
+    } else {
+      document.querySelector(select.containerOf.cart).style.display='block';
+    }
 
     let pageMatchingHash = thisApp.pages[0].id;
 

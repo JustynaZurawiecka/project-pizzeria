@@ -19,7 +19,7 @@
 }
 
 .order-box {
-    padding-right: 8px;
+  padding-right: 8px;
 }
 
 // .order-box img {
@@ -69,86 +69,113 @@
 .opening-hours-text {
   color: white;
   text-align: center;
-  font-size: 10px;
-  font-weight: bold;
   margin-top: 22px;
 }
 
 .opening-hours-text h1 {
   margin-bottom: 0;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .opening-hours-text h2 {
   margin-top: 0;  
+  font-size: 11px;
 }
 
 /* carousel */
-.carousel {
-  margin: 80px 0;
+
+.main-carousel {
+  width: 100%;
+  .carousel-cell {
+    width: 100%;
+    padding: 0 60px;
+    height: 100px;
+  }
+}
+
+.carousel-inner {
+  display: flex;
 }
 
 .carousel-indicators {
   display: none;
 }
 
-.carousel-inner {
-  flex-wrap: wrap;
-  display: flex;
+.carousel {
+  margin: 80px 0;
 }
 
-.carousel-image {
-  flex: 33%;  
-}
 
-.carousel-inner .item {
-  flex: 66%;  
-}
+
+
+
+// .carousel-image {
+//   flex: 33%;  
+// }
+
+// .carousel-inner .item {
+//   flex: 66%;  
+// }
 
 .carousel-image img {
   width: 200px;
   height: 200px;
-  max-width: 100%;
+  // max-width: 100%;
 }
 
-/* galeria */
 
-.galeria-images {
-    display: flex;
-    flex-wrap: wrap;
-    position: relative;
+/* galery */
+
+.galery {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.galeria-images img {
-    flex: 0 0 33.33%;
-    float: left;
-    width: 33.33%;
-    height: 200px;
-    padding: 5px;
-  }
+.galery .galery-image {
+  flex: 0 0 33.33%;
+  width: 33.33%;
+  padding: 5px;
+  position: relative; 
+  display: inline-block;
+  margin: 0 auto;
+  text-align: center;
 
-  .icones {
+}
+
+.galery .galery-image img {
+  width: 100%;
+  object-fit: cover;
+  height: 200px;
+}
+
+.icones {
+  display: flex;
   position: absolute;
   width: 100%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%,-50%);
-  display: block;
-  text-align: center;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  color: #fff;
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
 }
 
-
-.galeria-images img:hover  .icones, 
-.galeria-images img:hover  .icones  {
-  display: block;
+.galery-image:hover .icones {
+  opacity: 1;
+  color: #ff6b6b;
+  
 }
 
-// // .galeria-image img {
+// // .galery-image img {
 // //   width: 100%;
 // //   height: 200px;
 // //   object-fit: cover;
 // // }
 
-// .galeria-images .heart-icon, .galeria-images .share-icon {
+// .galery-images .heart-icon, .galery-images .share-icon {
 //   position: absolute;
 //   width: 100%;
 //   top: 50%;
@@ -158,12 +185,10 @@
 // }
 
 
-
-.home .instagram-link {
-    margin-top: 20px;
- a {
-    color: red;
+.instagram {
+  margin-top: 20px;
 }
+  
+.instagram a {
+  color: red;
 }
-
-

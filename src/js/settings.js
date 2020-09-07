@@ -68,7 +68,7 @@ export const select = {
     address: '.order-confirmation [name="address"]',
   },
   nav: {
-    links: '.main-nav a',
+    links: '.content a',
   },
 };
   
