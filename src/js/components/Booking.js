@@ -14,7 +14,7 @@ class Booking{
     thisBooking.getData();
     thisBooking.initActions();
 
-    thisBooking.selectedTable;
+    thisBooking.selectedTable = [];
   }
 
   getData(){
@@ -128,7 +128,6 @@ class Booking{
 
       // console.log('makeBooked petla wartosci:', 'startHour ' + startHour + ' hourBlock ' + hourBlock );
 
-
     }
   }
 
@@ -162,6 +161,7 @@ class Booking{
         table.classList.add(classNames.booking.tableBooked);
       } else{
         table.classList.remove(classNames.booking.tableBooked);
+        thisBooking.selectedTable = [];
       }
     }
     // console.log('thisBooking.booked z updateDOM',thisBooking.booked);
@@ -213,15 +213,12 @@ class Booking{
       clikableTable.addEventListener('click', function(){
 
         clikableTable.classList.add(classNames.booking.tableBooked);
-        // console.log('clikableTable', clikableTable);
         
         let tableId = clikableTable.getAttribute(settings.booking.tableIdAttribute);
-        thisBooking.selectedTable =  tableId;
+   
+        thisBooking.selectedTable.push(tableId);
       });
     }
-    /* if a table contains setting booked, alert that it's unavailable */ 
-    /* else  * / 
-    /* remove active class from the available table after date or hour is changed */  
 
     thisBooking.dom.form = thisBooking.dom.wrapper.querySelector(select.booking.form);
 
@@ -238,7 +235,7 @@ class Booking{
     const payload = {
       date: thisBooking.datePicker.value,
       hour: thisBooking.dom.hourPicker.output.innerHTML,
-      table: parseInt(thisBooking.selectedTable),
+      table: [],
       duration: parseInt(thisBooking.dom.hoursAmount.input.value),
       ppl: parseInt(thisBooking.dom.peopleAmount.input.value),
       starters: [],
@@ -252,7 +249,13 @@ class Booking{
       }
     }
 
-    // console.log('payload', payload);
+    for (let pickedTable of thisBooking.selectedTable) {
+      payload.table.push(parseInt(pickedTable));
+      thisBooking.makeBooked(thisBooking.datePicker.value, thisBooking.dom.hourPicker.output.innerHTML, parseInt(thisBooking.dom.hoursAmount.input.value), parseInt(pickedTable));
+    }
+
+
+    console.log('payload', payload);
 
     const options = {
       method: 'POST',
@@ -270,11 +273,9 @@ class Booking{
       }).then(function(parsedResponse){
         console.log('parsedResponse', parsedResponse);
       });
-    
-      thisBooking.makeBooked(thisBooking.datePicker.value, thisBooking.dom.hourPicker.output.innerHTML, parseInt(thisBooking.dom.hoursAmount.input.value), parseInt(thisBooking.selectedTable));
-      // thisBooking.updateDOM();
 
-      // console.log(thisBooking.booked,'thisBooking.booked');
+    thisBooking.selectedTable = [];
+    console.log('thisBooking.booked', thisBooking.booked);
       }
 
 
