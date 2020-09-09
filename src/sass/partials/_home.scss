@@ -6,7 +6,6 @@
 .links-wrapper {
   display: flex;
   flex-wrap: wrap;
-  // justify-content: space-between;
   margin-top: 30px;
 }
 
@@ -22,13 +21,8 @@
   padding-right: 8px;
 }
 
-// .order-box img {
-//   margin-right: 10px;
-// }
-
 .order-box img, .booking-box img{
   width: 100%;
-  // max-width: 100%;
   height: 100px;
   object-fit: cover;
 }
@@ -43,7 +37,7 @@
 }
 
 .order-box a, .booking-box a{
-  color: white;
+  color: $color-light;
   font-size: 15px;
   text-align: center;
   text-decoration: none;
@@ -51,7 +45,7 @@
 }
 
 .order-subtitle {
-  color: white;
+  color: $color-light;
   display: none;
   font-size: 10px;
 }
@@ -61,13 +55,13 @@
 }
 
 .opening-hours-box {
-  background: #ff6b6b;
+  background: $color-main;
   width: 100%;
   height: 100px;
 }
 
 .opening-hours-text {
-  color: white;
+  color: $color-light;
   text-align: center;
   margin-top: 22px;
 }
@@ -83,8 +77,7 @@
   font-size: 11px;
 }
 
-/* carousel */
-
+/* Carousel */
 .main-carousel {
   width: 100%;
 
@@ -110,12 +103,9 @@
 .carousel-image img {
   width: 200px;
   height: 200px;
-  // max-width: 100%;
 }
 
-
-/* galery */
-
+/* Galery */
 .galery {
   display: flex;
   flex-wrap: wrap;
@@ -124,21 +114,26 @@
 .galery .galery-image {
   flex: 0 0 33.33%;
   width: 33.33%;
-  padding: 5px;
+  height: 100%;
+  // padding: 0px 5px;
+  // border: 15px;
+  margin: 125px;
   position: relative;
-  display: inline-block;
+  display: block;
   margin: 0 auto;
   text-align: center;
+  padding: 5px;
+  // justify-content: center;
 }
 
 .galery .galery-image img {
-  // max-width: 200px;
   width: 100%;
   object-fit: cover;
   height: 200px;
+  display: block;
 }
 
-.icones {
+.icons {
   display: flex;
   position: absolute;
   width: 100%;
@@ -147,28 +142,20 @@
   align-items: center;
   top: 0;
   left: 0;
-  
   background: rgba(0,0,0,0.5);
   opacity: 0;
+
+  a {
+    color: $color-light;
+  }
 }
 
-.galery-image:hover .icones {
+.galery-image:hover .icons{
   opacity: 1;
-  // color: #ff6b6b;
-  // height: 100%;
-  // max-width: 100%;
-  // width: 100%;
 }
 
-.icones a {
-  color: #fff;
-}
-
-.galery-image:hover .icones a {
-  color: #ff6b6b;
-  // height: 100%;
-  // max-width: 100%;
-  // width: 100%;
+.galery-image .icons a:hover {
+  color: $color-main;
 }
 
 .heart-icon {
@@ -178,7 +165,7 @@
 .instagram {
   margin-top: 20px;
 }
-  
+
 .instagram a {
-  color: red;
+  color: $color-main;
 }
