@@ -1,1 +1,1 @@
-https://thebestpizza.herokuapp.com/#/booking
+https://thebestpizza.herokuapp.com
